@@ -128,7 +128,13 @@ Player.prototype.MAX_Y = 5*Player.prototype.Y_STEP+Player.prototype.MIN_Y;
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
+const NUMBER_OF_ENEMIES = 5;
+const allEnemies = [];
+for (let i = 0; i < NUMBER_OF_ENEMIES; ++i) {
+    allEnemies.push(new Enemy());
+}
 
+const player = new Player();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
