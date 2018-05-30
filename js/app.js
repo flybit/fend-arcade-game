@@ -48,6 +48,82 @@ Enemy.prototype.MAX_Y = 500;
 Enemy.prototype.MIN_X = -100;
 
 
+class Player {
+    constructor() {
+        this.sprite = 'images/char-boy.png';
+        this.frozen = false;
+        this.reset();
+    }
+
+    reset() {
+        [this.x, this.y] = [(this.MIN_X + this.MAX_X)/2, this.MAX_Y];
+    }
+
+    render() {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
+
+    update() {
+        if (this.frozen) {
+            return;
+        }
+
+        // Check for collisions
+        let colliding = allEnemies.filter((e) => {
+            const dX = this.x - e.x;
+            const dY = this.y - e.y;
+
+            return dX > -30 && dX < 30 && dY < 0 && dY > -50;
+        });
+
+        if (colliding.length) {
+            console.log('Collision detected');
+            this.reset();
+        }
+
+        // Won the game?
+        if (this.y < 0) {
+            this.frozen = true;
+            document.querySelector('.modal').showModal();
+        }
+    }
+
+    handleInput(key) {
+        if (!key || this.frozen) {
+            return;
+        }
+
+        switch(key) {
+            case 'left':
+                this.x -= this.X_STEP;
+                break;
+            case 'up':
+                this.y -= this.Y_STEP;
+                break;
+            case 'right':
+                this.x += this.X_STEP;
+                break;
+            case 'down':
+                this.y += this.Y_STEP;
+                break;
+            default:
+                console.error('Unknown key: ', key);
+                return;
+        }
+
+        this.x = Math.max(this.MIN_X, Math.min(this.x, this.MAX_X));
+        this.y = Math.max(this.MIN_Y, Math.min(this.y, this.MAX_Y));
+    }
+}
+
+// Static constants
+Player.prototype.Y_STEP = 82;
+Player.prototype.X_STEP = 100;
+Player.prototype.MIN_X = 0;
+Player.prototype.MAX_X = 4*Player.prototype.X_STEP+Player.prototype.MIN_X;;
+Player.prototype.MIN_Y = -25;
+Player.prototype.MAX_Y = 5*Player.prototype.Y_STEP+Player.prototype.MIN_Y;
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
