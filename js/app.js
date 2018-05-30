@@ -11,7 +11,19 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
+
+    // Set position and speed
+    this.reset();
 };
+
+Enemy.prototype.reset = function() {
+    // Pick a random row (uniform over [0, 2])
+    this.x = this.MIN_X;
+    this.y = 62 + randomInt(3) * 82;
+
+    // Pick a random speed (uniform over {100, 200, 300})
+    this.speed = 100 + randomInt(3) * 100;
+}
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
