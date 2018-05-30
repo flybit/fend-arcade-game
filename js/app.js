@@ -1,3 +1,8 @@
+function randomInt(end) {
+    // From: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+    return Math.floor(Math.random() * Math.floor(end))
+}
+
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
