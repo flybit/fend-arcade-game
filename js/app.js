@@ -148,3 +148,10 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+document.querySelector('.modal .ok-button').addEventListener('click', () => {
+    player.frozen = false;
+    player.reset();
+    document.querySelector('.modal').close();
+});
+
