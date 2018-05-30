@@ -5,9 +5,6 @@ function randomInt(end) {
 
 // Enemies our player must avoid
 var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -47,15 +44,18 @@ Enemy.prototype.render = function() {
 Enemy.prototype.MAX_Y = 500;
 Enemy.prototype.MIN_X = -100;
 
-
 class Player {
     constructor() {
         this.sprite = 'images/char-boy.png';
+        // For freezing the player when the game is over
         this.frozen = false;
+        // Reset posiiton
         this.reset();
     }
 
+    // Unfreeze and reset position
     reset() {
+        this.frozen = false;
         [this.x, this.y] = [(this.MIN_X + this.MAX_X)/2, this.MAX_Y];
     }
 
@@ -64,6 +64,7 @@ class Player {
     }
 
     update() {
+        // Return early if frozen
         if (this.frozen) {
             return;
         }
@@ -76,6 +77,7 @@ class Player {
             return dX > -30 && dX < 30 && dY < 0 && dY > -50;
         });
 
+        // Go back to the bottom if there is a collision
         if (colliding.length) {
             console.log('Collision detected');
             this.reset();
@@ -83,16 +85,20 @@ class Player {
 
         // Won the game?
         if (this.y < 0) {
+            // Freeze
             this.frozen = true;
+            // Show the modal dialog
             document.querySelector('.modal').showModal();
         }
     }
 
     handleInput(key) {
+        // Return early if frozen or unsupported key
         if (!key || this.frozen) {
             return;
         }
 
+        // Update position
         switch(key) {
             case 'left':
                 this.x -= this.X_STEP;
@@ -111,6 +117,7 @@ class Player {
                 return;
         }
 
+        // Clip
         this.x = Math.max(this.MIN_X, Math.min(this.x, this.MAX_X));
         this.y = Math.max(this.MIN_Y, Math.min(this.y, this.MAX_Y));
     }
@@ -127,7 +134,6 @@ Player.prototype.MAX_Y = 5*Player.prototype.Y_STEP+Player.prototype.MIN_Y;
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-
 const NUMBER_OF_ENEMIES = 5;
 const allEnemies = [];
 for (let i = 0; i < NUMBER_OF_ENEMIES; ++i) {
@@ -150,7 +156,6 @@ document.addEventListener('keyup', function(e) {
 });
 
 document.querySelector('.modal .ok-button').addEventListener('click', () => {
-    player.frozen = false;
     player.reset();
     document.querySelector('.modal').close();
 });
