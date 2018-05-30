@@ -74,7 +74,7 @@ class Player {
             const dX = this.x - e.x;
             const dY = this.y - e.y;
 
-            return dX > -30 && dX < 30 && dY < 0 && dY > -50;
+            return dX > -70 && dX < 75 && dY < 0 && dY > -50;
         });
 
         // Go back to the bottom if there is a collision
